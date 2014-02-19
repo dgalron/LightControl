@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, abort
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -30,5 +31,10 @@ def set_light_texture():
         abort(400)
     return jsonify({'texture': request.json['texture'], 'state_did_change': True})
 
+@app.route('/home', methods=['GET'])
+def homepage():
+    return render_template("default.html")
+
 if __name__ == '__main__':
-    app.run('0.0.0.0')
+    #app.run('0.0.0.0')
+    app.run('127.0.0.1', 5810)
