@@ -65,11 +65,8 @@ class LightState(object):
         pass
 
     def marshal(self):
-        print 'in marshal', str(self)
         p = int(self.power) | int(self.white) | int(self.white_texture) | int(self.white_dimness)
-        print 'got p', p
         p = p | int(self.color) | int(self.red_val) | int(self.green_val) | int(self.blue_val) | int(self.color_pattern)
-        print 'got p finally', p, type(p)
         return struct.pack('L', p)
 
     def __str__(self):
@@ -88,20 +85,15 @@ arduino_socket.connect((TCP_IP, TCP_PORT))
 
 
 def send_request():
-    print 'in send_request', state.power
     req = state.marshal()
-    print 'marshalled request', req
     arduino_socket.send(req)
-    print 'sent to arduino'
 
 
 @app.route('/api/power', methods=['POST'])
 def set_power():
     if not request.json or 'power_state' not in request.json:
         abort(400)
-    print 'received request', request.json
     state_change = state.set_power(request.json['power_state'])
-    print 'state change', state_change
     send_request()
     return jsonify({'power': request.json['power_state'], 'state_did_change': state_change})
 
