@@ -31,7 +31,7 @@ def set_light_texture():
         abort(400)
     return jsonify({'texture': request.json['texture'], 'state_did_change': True})
 
-@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
 def homepage():
     return render_template("default.html")
 
