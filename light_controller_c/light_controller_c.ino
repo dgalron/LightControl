@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_CC3000.h>
 #include <SPI.h>
+#include <String.h>
 
 #include <utility/debug.h>
 
@@ -14,14 +15,19 @@
 Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,
                                          SPI_CLOCK_DIVIDER); // you can change this clock speed
 
-#define WLAN_SSID       "xxx"        // cannot be longer than 32 characters!
-#define WLAN_PASS       "yyy"
+#define WLAN_SSID       "Q82L9ETY6"        // cannot be longer than 32 characters!
+#define WLAN_PASS       "tardis_5811!#"
 // Security can be WLAN_SEC_UNSEC, WLAN_SEC_WEP, WLAN_SEC_WPA or WLAN_SEC_WPA2
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 
 #define LISTEN_PORT           1234    // What TCP port to listen on for connections.
 
 Adafruit_CC3000_Server lightServer(LISTEN_PORT);
+
+uint8_t lightstate[8];
+uint32_t ix = 0;
+//long long int lightstate = 0;
+
 
 void setup(void)
 {
@@ -55,20 +61,33 @@ void loop(void)
 {
   Adafruit_CC3000_ClientRef client = lightServer.available();
   if (client) {
-     // Check if there is data available to read.
-     char buffer[64];
-     uint32_t i = 0;
-     if (client.available() > 0) {
-       // Read a byte and write it to all clients.
-       uint8_t ch = client.read();
-       lightServer.write(ch
-       buffer[i++] = ch;
-     }
-     buffer[i++] = 0;
-     Serial.print(buffer);
-     Serial.println(F(""));
+    // Check if there is data available to read.
+    if (client.available() > 0) {
+      lightstate[ix++] = client.read();
+      Serial.print("lightstate ");
+      for (int i = 0; i < 8; ++i) {
+        String string = String(lightstate[i], BIN);
+        Serial.print(string);
+        Serial.print(" ");
+      }
+      Serial.println("");
+    }
+  }
+  // At this point we've read in a full packet
+  if (ix == 8) {
+    Serial.print("FINAL lightstate ");
+    for (int i = 0; i < 8; ++i) {
+      String string = String(lightstate[i], BIN);
+      Serial.print(string);
+      Serial.print(" ");
+    }
+    setLightState();
+    ix = 0;
   }
 }
+
+void setLightState(void)
+{}
 
 bool displayConnectionDetails(void)
 {
