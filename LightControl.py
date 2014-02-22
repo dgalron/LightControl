@@ -21,9 +21,11 @@ arduino_socket.connect((TCP_IP, TCP_PORT))
 
 def send_request(opt=None):
     if opt is None:
+        print 'marshalling'
         req = state.marshal()
     else:
         req = opt
+    print "sending request", req, len(req)
     arduino_socket.send(req)
 
 
@@ -41,11 +43,31 @@ def set_power():
     return jsonify(state.to_dict())
 
 
+def get_new_intensity(current_value, incremental_value):
+    if incremental_value > 0:
+        return min(current_value + incremental_value, 255)
+    elif incremental_value < 0:
+        return max(current_value + incremental_value, 0)
+    else:
+        return current_value
+
+
 @app.route('/api/dimmer/<temperature>', methods=['POST'])
 def set_dimness(temperature):
     """If value is None it means change the selected temperature."""
     if not request.json or 'value' not in request.json:
         abort(400)
+    incremental_value = request.json['value']
+    if temperature == 'warm_white':
+        state.warm = get_new_intensity(state.warm, incremental_value)
+    elif temperature == 'cool_white':
+        state.cool = get_new_intensity(state.cool, incremental_value)
+    elif temperature == 'color':
+        state.red = get_new_intensity(state.red, incremental_value)
+        state.green = get_new_intensity(state.green, incremental_value)
+        state.blue = get_new_intensity(state.blue, incremental_value)
+    if incremental_value != 0:
+        send_request()
     return jsonify(state.to_dict())
 
 
