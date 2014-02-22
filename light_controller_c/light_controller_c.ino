@@ -97,7 +97,7 @@ void loop(void)
     redValueState = lightstate[PROTOCOL_RED_STATE_IX];
     greenValueState = lightstate[PROTOCOL_GREEN_STATE_IX];
     blueValueState = lightstate[PROTOCOL_BLUE_STATE_IX];
-    for (uint8_t i = 2; i >= 0; i--) {
+    for (int8_t i = 2; i >= 0; i--) {
       colorPatternState = (colorPatternState << 8) | lightstate[i];
     }
     setLightState();
