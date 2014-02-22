@@ -6,42 +6,30 @@
     <!--Cover template for Bootstrap, by @mdo.-->
     <!-- Bootstrap core CSS -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
       <!-- Custom styles for this template -->
     <link href="static/cover.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   </head>
   <body>
-    <div class="site-wrapper">
+    <div id="site" class="container off">
       <div class="site-wrapper-inner">
         <div class="cover-container">
 
           <div class="inner cover">
             <h1 class="cover-heading">Control the lights.</h1>
             <p class="lead">Daniel and Clair invite you to mess with their lights.</p>
-            <p class="lead">
-                <!-- Single dropdown -->
-                <div class="btn-group" style="width:30%;">
-                  <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown">
-                    POWER <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#" id="power-on">ON</a></li>
-                    <li><a href="#" id="power-off">OFF</a></li>
-                  </ul>
-                </div>
-            </p>
+            </br>
           </div>
-            <div class="divider"></div>
           <div>
-                <!--Slider for dimmer-->
+              <!-- Single dropdown -->
+              <i id="power" class="fa fa-power-off btn btn-info fa-5x"></i>
+
               </br>
               </br>
               </br>
-              <div class="span12">
-                  <div class="row span12">
-                      <div class="pull-left span6"><h3>Dimmer</h3></div><div class="pull-right span6"><h3>Brighter</h3></div>
-                  </div>
-                  <div class="row" id="slider"></div>
-              </div>
+              ...
+
           </div>
 
           <div class="mastfoot">
@@ -65,22 +53,19 @@
     <script>
 
 
-        $("#power-on").click(function(e){
-            var data = { power_state : 1 };
+        $("#power").click(function(e){
+            var power = $("#site.off").length ? 1 : 0;
+
+            var data = { power_state : power };
             var url = document.URL.split('#')[0] + "api/power";
 
             send_request(url, data);
 
-            e.preventDefault();
-        });
-        $("#power-off").click(function(e){
-            var data = { power_state : 0 };
-            var url = document.URL.split('#')[0] + "api/power";
-
-            send_request(url, data);
+            $("#site").toggleClass("off").toggleClass("on");
 
             e.preventDefault();
         });
+
 
         var send_request = function(url, data) {
             $.ajax({
@@ -96,9 +81,6 @@
         }
 
 
-        $(function() {
-            $( "#slider" ).slider();
-        });
     </script>
   </body>
 </html>
