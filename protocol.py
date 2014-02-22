@@ -62,3 +62,13 @@ class LightState(object):
     def __str__(self):
         return '{0} {1} {2} {3} {4} {5}' \
             .format(self.warm, self.cool, self.red, self.green, self.blue, self.color_pattern)
+
+    def to_dict(self):
+        return {
+            'warm': self.warm,
+            'cool': self.cool,
+            'red': self.red,
+            'green': self.green,
+            'blue': self.blue,
+            'color_pattern': str(self.color_pattern)
+        }
