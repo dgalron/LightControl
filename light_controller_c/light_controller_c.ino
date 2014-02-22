@@ -22,8 +22,8 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 
 #define LISTEN_PORT           1234    // What TCP port to listen on for connections.
 
-#define WARM_PIN 1
-#define COOL_PIN 0
+#define WARM_PIN 6
+#define COOL_PIN 9
 
 
 Adafruit_CC3000_Server lightServer(LISTEN_PORT);
