@@ -38,7 +38,7 @@ def set_power():
     else:
         send_request(state.off_state)
 
-    return jsonify({'power': request.json['power_state'], 'state_did_change': state_change})
+    return jsonify(state.to_dict())
 
 
 @app.route('/api/dimmer/<temperature>', methods=['POST'])
@@ -46,14 +46,14 @@ def set_dimness(temperature):
     """If value is None it means change the selected temperature."""
     if not request.json or 'value' not in request.json:
         abort(400)
-    return jsonify({'intensity': request.json['intensity'], 'state_did_change': True})
+    return jsonify(state.to_dict())
 
 
 @app.route('/api/pattern', methods=['POST'])
 def set_light_texture():
     if not request.json or 'texture' not in request.json:
         abort(400)
-    return jsonify({'texture': request.json['texture'], 'state_did_change': True})
+    return jsonify(state.to_dict())
 
 
 @app.route('/', methods=['GET'])
