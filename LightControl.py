@@ -19,8 +19,11 @@ arduino_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 arduino_socket.connect((TCP_IP, TCP_PORT))
 
 
-def send_request():
-    req = state.marshal()
+def send_request(opt=None):
+    if opt is None:
+        req = state.marshal()
+    else:
+        req = opt
     arduino_socket.send(req)
 
 
@@ -28,8 +31,13 @@ def send_request():
 def set_power():
     if not request.json or 'power_state' not in request.json:
         abort(400)
-    state_change = state.set_power(request.json['power_state'])
-    send_request()
+
+    state_change = request.json['power_state']
+    if state_change:
+        send_request()
+    else:
+        send_request(state.off_state)
+
     return jsonify({'power': request.json['power_state'], 'state_did_change': state_change})
 
 

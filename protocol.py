@@ -30,41 +30,35 @@ class BitVector64(object):
 
 # TODO: Make this a singleton
 class LightState(object):
+    off_state = struct.pack('L', 0)
+
     def __init__(self):
-        self.power = BitVector64(0)
-        self.white = BitVector64(0)
-        self.white_texture = BitVector64(0)
-        self.white_dimness = BitVector64(0)
-        self.color = BitVector64(0)
-        self.red_val = BitVector64(0)
-        self.green_val = BitVector64(0)
-        self.blue_val = BitVector64(0)
+        self.warm = 0
+        self.cool = 0
+        self.red = 0
+        self.green = 0
+        self.blue = 0
         self.color_pattern = BitVector64(0)
 
-    def set_power(self, val):
-        prev_val = int(self.power.get_bits(0, 1))
-        self.power.set_bits(0, val)
-        return prev_val != val
-
-    def set_white(self, val):
-        pass
-
-    def set_dimness(self, val):
-        pass
-
-    def set_color_pattern(self, val):
-        pass
-
-    def set_white_texture(self, val):
-        pass
+    def __setattr__(self, name, value):
+        if name != 'color_pattern':
+            if 0 <= value <= 255:
+                self.__dict__[name] = value
+            else:
+                raise ValueError('can\'t set %s to %s. value must be between 0 and 255!' % (name, value))
+        else:
+            self.__dict__[name] = value
 
     def marshal(self):
-        p = int(self.power) | int(self.white) | int(self.white_texture) | int(self.white_dimness) | \
-            int(self.color) | int(self.red_val) | int(self.green_val) | int(self.blue_val) | \
+        # bitshift values then 'or' them
+        p = (int(self.warm ) << 8 * 7) |  \
+            (int(self.cool ) << 8 * 6) |  \
+            (int(self.red  ) << 8 * 5) |  \
+            (int(self.green) << 8 * 4) |  \
+            (int(self.blue ) << 8 * 3) |  \
             int(self.color_pattern)
         return struct.pack('L', p)
 
     def __str__(self):
-        return '{0} {1} {2} {3} {4} {5} {6} {7} {8}' \
-            .format(self.power, self.white, self.white_texture, self.white_dimness, self.color, self.red_val,
-                    self.green_val, self.blue_val, self.color_pattern)
+        return '{0} {1} {2} {3} {4} {5}' \
+            .format(self.warm, self.cool, self.red, self.green, self.blue, self.color_pattern)
