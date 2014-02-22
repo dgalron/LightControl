@@ -22,15 +22,32 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 
 #define LISTEN_PORT           1234    // What TCP port to listen on for connections.
 
+#define WARM_PIN 1
+#define COOL_PIN 0
+
+
 Adafruit_CC3000_Server lightServer(LISTEN_PORT);
 
-uint8_t lightstate[8];
-uint32_t ix = 0;
-//long long int lightstate = 0;
+uint8_t powerState;
+uint8_t brightnessState;
+uint8_t redValue;
+uint8_t greenValue;
+uint8_t blueValue;
+uint32_t colorPattern;
 
+uint8_t lightstate[8];
+uint8_t ix = 0;
+
+#define PROTOCOL_BLUE_STATE_IX 3
+#define PROTOCOL_GREEN_STATE_IX 4
+#define PROTOCOL_RED_STATE_IX 5
+#define PROTOCOL_BRIGHT_STATE_IX 6
+#define PROTOCOL_POWER_STATE_IX 7
 
 void setup(void)
 {
+  analogWrite(WARM_PIN, 0);
+  analogWrite(COOL_PIN, 0);
   Serial.begin(115200);
   Serial.println(F("Initializing light control server"));
   Serial.print("Free Ram: ");
@@ -75,11 +92,13 @@ void loop(void)
   }
   // At this point we've read in a full packet
   if (ix == 8) {
-    Serial.print("FINAL lightstate ");
-    for (int i = 0; i < 8; ++i) {
-      String string = String(lightstate[i], BIN);
-      Serial.print(string);
-      Serial.print(" ");
+    powerState = lightstate[PROTOCOL_POWER_STATE_IX];
+    brightnessState = lightstate[PROTOCOL_POWER_STATE_IX];
+    redValue = lightstate[PROTOCOL_RED_STATE_IX];
+    greenValue = lightstate[PROTOCOL_GREEN_STATE_IX];
+    blueValue = lightstate[PROTOCOL_BLUE_STATE_IX];
+    for (uint8_t i = 2; i >= 0; i--) {
+      colorPattern = (colorPattern << 8) | lightstate[i];
     }
     setLightState();
     ix = 0;
@@ -87,7 +106,17 @@ void loop(void)
 }
 
 void setLightState(void)
-{}
+{
+  if !(powerState & 0x80) {
+    turnOff();
+  }
+}
+
+void turnOff(void)
+{
+  analogWrite(WARM_PIN, 0);
+  analogWrite(COOL_PIN, 0);
+}
 
 bool displayConnectionDetails(void)
 {
