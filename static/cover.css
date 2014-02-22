@@ -29,7 +29,6 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #333;
 }
 body {
   color: #fff;
@@ -38,13 +37,20 @@ body {
   box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 }
 
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
+.container {
   display: table;
   width: 100%;
   height: 100%; /* For at least Firefox */
   min-height: 100%;
 }
+
+.on {
+  background-color: #999;
+}
+.off {
+  background-color: #333;
+}
+
 .site-wrapper-inner {
   display: table-cell;
   vertical-align: top;
@@ -163,5 +169,10 @@ body {
 }
 
 .dropdown-menu {
-  width: 100%;
+  min-width: 112px;
+}
+
+.ui-slider{
+  width: 80%;
+  margin-left:10%;
 }
