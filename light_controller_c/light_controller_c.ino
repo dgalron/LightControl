@@ -28,12 +28,12 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 
 Adafruit_CC3000_Server lightServer(LISTEN_PORT);
 
-uint8_t powerState;
-uint8_t brightnessState;
-uint8_t redValue;
-uint8_t greenValue;
-uint8_t blueValue;
-uint32_t colorPattern;
+uint8_t warmBrightnessState;
+uint8_t coolBrightnessState;
+uint8_t redValueState;
+uint8_t greenValueState;
+uint8_t blueValueState;
+uint32_t colorPatternState;
 
 uint8_t lightstate[8];
 uint8_t ix = 0;
@@ -41,8 +41,8 @@ uint8_t ix = 0;
 #define PROTOCOL_BLUE_STATE_IX 3
 #define PROTOCOL_GREEN_STATE_IX 4
 #define PROTOCOL_RED_STATE_IX 5
-#define PROTOCOL_BRIGHT_STATE_IX 6
-#define PROTOCOL_POWER_STATE_IX 7
+#define PROTOCOL_COOL_BRIGHT_STATE_IX 6
+#define PROTOCOL_WARM_BRIGHT_STATE_IX 7
 
 void setup(void)
 {
@@ -92,13 +92,13 @@ void loop(void)
   }
   // At this point we've read in a full packet
   if (ix == 8) {
-    powerState = lightstate[PROTOCOL_POWER_STATE_IX];
-    brightnessState = lightstate[PROTOCOL_POWER_STATE_IX];
-    redValue = lightstate[PROTOCOL_RED_STATE_IX];
-    greenValue = lightstate[PROTOCOL_GREEN_STATE_IX];
-    blueValue = lightstate[PROTOCOL_BLUE_STATE_IX];
+    warmBrightnessState = lightstate[PROTOCOL_WARM_BRIGHT_STATE_IX];
+    coolBrightnessState = lightstate[PROTOCOL_COOL_BRIGHT_STATE_IX];
+    redValueState = lightstate[PROTOCOL_RED_STATE_IX];
+    greenValueState = lightstate[PROTOCOL_GREEN_STATE_IX];
+    blueValueState = lightstate[PROTOCOL_BLUE_STATE_IX];
     for (uint8_t i = 2; i >= 0; i--) {
-      colorPattern = (colorPattern << 8) | lightstate[i];
+      colorPatternState = (colorPatternState << 8) | lightstate[i];
     }
     setLightState();
     ix = 0;
@@ -107,15 +107,8 @@ void loop(void)
 
 void setLightState(void)
 {
-  if !(powerState & 0x80) {
-    turnOff();
-  }
-}
-
-void turnOff(void)
-{
-  analogWrite(WARM_PIN, 0);
-  analogWrite(COOL_PIN, 0);
+  analogWrite(WARM_PIN, warmBrightnessState);
+  analogWrite(COOL_PIN, coolBrightnessState);
 }
 
 bool displayConnectionDetails(void)
