@@ -176,3 +176,38 @@ body {
   width: 80%;
   margin-left:10%;
 }
+
+
+.dpad-container {
+    display: block;
+    padding-top:10px;
+}
+.d-pad {
+    min-width: 90px;
+    min-height: 90px;
+    max-width: 100px;
+    max-height: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    color:
+}
+.d-ico{
+    margin-top: 15px;
+}
+
+#hot{
+    background-color: #FEC;
+    border-color: #FEC;
+}
+#cool{
+    background-color: #CDF;
+    border-color: #CDF;
+}
+#bright{
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+}
+#dim{
+    background-color: #666;
+    border-color: #666;
+}
