@@ -30,7 +30,7 @@ class BitVector64(object):
 
 # TODO: Make this a singleton
 class LightState(object):
-    off_state = struct.pack('L', 0)
+    global_off_state = struct.pack('L', 0)
 
     def __init__(self):
         self.warm = 0
@@ -39,6 +39,10 @@ class LightState(object):
         self.green = 0
         self.blue = 0
         self.color_pattern = BitVector64(0)
+        self.power = {'global': True,
+                      'warm': True,
+                      'cool': True,
+                      'color': True}
 
     def __setattr__(self, name, value):
         if name != 'color_pattern':
@@ -51,12 +55,18 @@ class LightState(object):
 
     def marshal(self):
         # bitshift values then 'or' them
-        p = (int(self.warm ) << 8 * 7) |  \
-            (int(self.cool ) << 8 * 6) |  \
-            (int(self.red  ) << 8 * 5) |  \
-            (int(self.green) << 8 * 4) |  \
-            (int(self.blue ) << 8 * 3) |  \
-            int(self.color_pattern)
+        if not self.power['global']:
+            return struct.pack('L', 0)
+        p = 0
+        if self.power['warm']:
+            p |= int(self.warm ) << 8 * 7
+        if self.power['cool']:
+            p |= (int(self.cool ) << 8 * 6)
+        if self.power['color']:
+            p |= (int(self.red  ) << 8 * 5) |  \
+                 (int(self.green) << 8 * 4) |  \
+                 (int(self.blue ) << 8 * 3) |  \
+                int(self.color_pattern)
         return struct.pack('L', p)
 
     def __str__(self):
@@ -70,5 +80,6 @@ class LightState(object):
             'red': self.red,
             'green': self.green,
             'blue': self.blue,
-            'color_pattern': str(self.color_pattern)
+            'color_pattern': str(self.color_pattern),
+            'power': self.power
         }

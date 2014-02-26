@@ -34,11 +34,17 @@ def set_power():
     if not request.json or 'power_state' not in request.json:
         abort(400)
 
-    state_change = request.json['power_state']
-    if state_change:
-        send_request()
+    if 'global_power_state' in request.json:
+        state.power['global'] = request.json['global_power']
+    elif 'warm_power_state' in request.json:
+        state.power['warm'] = request.json['warm_power_state']
+    elif 'cool_power_state' in request.json:
+        state.power['cool'] = request.json['cool_power_state']
+    elif 'color_power_state' in request.json:
+        state.power['color'] = request.json['color_power_state']
     else:
-        send_request(state.off_state)
+        abort(404)
+    send_request()
 
     return jsonify(state.to_dict())
 
