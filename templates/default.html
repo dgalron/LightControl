@@ -13,40 +13,44 @@
   </head>
   <body>
     <div id="site" class="container off">
-      <div class="site-wrapper-inner">
-        <div class="cover-container">
 
-          <div class="inner cover">
-            <h1 class="cover-heading">Control the lights.</h1>
-            <p class="lead">Daniel and Clair invite you to mess with their lights.</p>
-            </br>
-          </div>
-          <div>
-              <!-- Single dropdown -->
-              <i id="power" class="fa fa-power-off btn btn-info fa-5x"></i>
-
-              </br>
-              </br>
-              </br>
-              <div class="dpad-container">
-                  <div id="dim" class="btn btn-default d-pad"><i class="fa fa-moon-o fa-3x d-ico"></i></div>
-                  <div id="bright" class="btn btn-default d-pad"><i class="fa fa-sun-o fa-3x d-ico"></i></div>
-              </div>
-
-              <div class="dpad-container">
-                  <div id="cool" class="btn btn-default d-pad"><i class="fa fa-asterisk fa-3x d-ico"></i></div>
-                  <div id="hot" class="btn btn-default d-pad"><i class="fa fa-fire fa-3x d-ico"></i></div>
-              </div>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-            </div>
-          </div>
-
+        <h1 class="cover-heading">Control the lights.</h1>
+        <p class="lead">Daniel and Clair invite you to mess with their lights.</p>
+        </br>
+        <div style="margin-bottom:50px;">
+            <!-- Global Power -->
+            <i id="power" class="fa fa-power-off btn btn-default fa-5x"></i>
         </div>
 
-      </div>
+        <!-- Warm White -->
+        <div class="blah">
+            <div class="warm-container f">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i id="warm-power" class="btn warm-btn fa fa-power-off fa-3x"></i>
+                    </div>
+                    <div class="col-xs-6">
+                        <i id="warm-bright" class="btn warm-btn fa fa-sun-o fa-3x"></i>
+                        <i id="warm-dim" class="btn warm-btn fa fa-moon-o fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cool White -->
+        <div class="blah">
+            <div class="cool-container f">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <i id="cool-power" class="btn cool-btn fa fa-power-off fa-3x"></i>
+                    </div>
+                    <div class="col-xs-6">
+                        <i id="cool-bright" class="btn cool-btn fa fa-sun-o fa-3x"></i>
+                        <i id="cool-dim" class="btn cool-btn fa fa-moon-o fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -62,14 +66,58 @@
 
         $("#power").click(function(e){
             var power = $("#site.off").length ? 1 : 0;
-
-            var data = { power_state : power };
+            var data = { global_power : power };
             var url = document.URL.split('#')[0] + "api/power";
-
             send_request(url, data);
-
             $("#site").toggleClass("off").toggleClass("on");
+            e.preventDefault();
+        });
 
+        $("#warm-power").click(function(e){
+            var power = $("#warm-power.f").length ? 1 : 0;
+            var data = { warm_power : power };
+            var url = document.URL.split('#')[0] + "api/power";
+            send_request(url, data);
+            $("#warm-power").toggleClass("f");
+            e.preventDefault();
+        });
+
+        $("#cool-power").click(function(e){
+            var power = $("#cool-power.f").length ? 1 : 0;
+            var data = { cool_power : power };
+            var url = document.URL.split('#')[0] + "api/power";
+            send_request(url, data);
+            $("#cool-power").toggleClass("f");
+            e.preventDefault();
+        });
+
+
+        // BRIGHTERS
+        $("#warm-bright").click(function(e){
+            var data = { value : 25 };
+            var url = document.URL.split('#')[0] + "api/dimmer/warm_white";
+            send_request(url, data);
+            e.preventDefault();
+        });
+        $("#cool-bright").click(function(e){
+            var data = { value : 25 };
+            var url = document.URL.split('#')[0] + "api/dimmer/cool_white";
+            send_request(url, data);
+            e.preventDefault();
+        });
+
+
+        // DIMMERS
+        $("#warm-dim").click(function(e){
+            var data = { value : -25 };
+            var url = document.URL.split('#')[0] + "api/dimmer/warm_white";
+            send_request(url, data);
+            e.preventDefault();
+        });
+        $("#cool-dim").click(function(e){
+            var data = { value : -25 };
+            var url = document.URL.split('#')[0] + "api/dimmer/cool_white";
+            send_request(url, data);
             e.preventDefault();
         });
 

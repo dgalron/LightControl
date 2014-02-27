@@ -31,17 +31,17 @@ def send_request(opt=None):
 
 @app.route('/api/power', methods=['POST'])
 def set_power():
-    if not request.json or 'power_state' not in request.json:
+    if not request.json:
         abort(400)
 
-    if 'global_power_state' in request.json:
+    if 'global_power' in request.json:
         state.power['global'] = request.json['global_power']
-    elif 'warm_power_state' in request.json:
-        state.power['warm'] = request.json['warm_power_state']
-    elif 'cool_power_state' in request.json:
-        state.power['cool'] = request.json['cool_power_state']
-    elif 'color_power_state' in request.json:
-        state.power['color'] = request.json['color_power_state']
+    elif 'warm_power' in request.json:
+        state.power['warm'] = request.json['warm_power']
+    elif 'cool_power' in request.json:
+        state.power['cool'] = request.json['cool_power']
+    elif 'color_power' in request.json:
+        state.power['color'] = request.json['color_power']
     else:
         abort(404)
     send_request()

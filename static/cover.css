@@ -16,11 +16,14 @@ a:hover {
 .btn-default:focus {
   color: #333;
   text-shadow: none; /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
-  width: 100%;
+  background-color: #ddd;
+  border: 1px solid #ddd;
 }
-
+.btn-default:hover,
+.btn-default:focus {
+  background-color: #eee;
+  border: 1px solid #eee;
+}
 
 /*
  * Base structure
@@ -45,169 +48,52 @@ body {
 }
 
 .on {
-  background-color: #999;
+  background-color: #777;
 }
 .off {
   background-color: #333;
 }
 
-.site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top;
+.row {
+    display: inline;
 }
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-}
-
-/* Padding for spacing */
-.inner {
-  padding: 30px;
-}
-
-
-/*
- * Header
- */
-.masthead-brand {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.masthead-nav > li {
-  display: inline-block;
-}
-.masthead-nav > li + li {
-  margin-left: 20px;
-}
-.masthead-nav > li > a {
-  padding-right: 0;
-  padding-left: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff; /* IE8 proofing */
-  color: rgba(255,255,255,.75);
-  border-bottom: 2px solid transparent;
-}
-.masthead-nav > li > a:hover,
-.masthead-nav > li > a:focus {
-  background-color: transparent;
-  border-bottom-color: rgba(255,255,255,.25);
-}
-.masthead-nav > .active > a,
-.masthead-nav > .active > a:hover,
-.masthead-nav > .active > a:focus {
-  color: #fff;
-  border-bottom-color: #fff;
-}
-
-@media (min-width: 768px) {
-  .masthead-brand {
-    float: left;
-  }
-  .masthead-nav {
-    float: right;
-  }
-}
-
-
-/*
- * Cover
- */
-
-.cover {
-  padding: 0 20px;
-}
-.cover .btn-lg {
-  padding: 10px 20px;
-  font-weight: bold;
-}
-
-
-/*
- * Footer
- */
-
-.mastfoot {
-  color: #999; /* IE8 proofing */
-  color: rgba(255,255,255,.5);
-}
-
-
-/*
- * Affix and center
- */
-
-@media (min-width: 768px) {
-  /* Pull out the header and footer */
-  .masthead {
-    position: fixed;
-    top: 0;
-  }
-  .mastfoot {
-    position: fixed;
-    bottom: 0;
-  }
-  /* Start the vertical centering */
-  .site-wrapper-inner {
-    vertical-align: middle;
-  }
-  /* Handle the widths */
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%; /* Must be percentage or pixels for horizontal alignment */
-  }
-}
-
-@media (min-width: 992px) {
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 700px;
-  }
-}
-
-.dropdown-menu {
-  min-width: 112px;
-}
-
-.ui-slider{
-  width: 80%;
-  margin-left:10%;
-}
-
-
-.dpad-container {
-    display: block;
-    padding-top:10px;
-}
-.d-pad {
-    min-width: 90px;
-    min-height: 90px;
-    max-width: 100px;
-    max-height: 100px;
+.col-xs-6 {
     display: inline-block;
     vertical-align: middle;
-    color:
-}
-.d-ico{
-    margin-top: 15px;
+    float: none;
+    padding: 0;
 }
 
-#hot{
+.warm-btn {
     background-color: #FEC;
     border-color: #FEC;
+    color: #000;
+    min-width: 70px;
+    margin-bottom: 10px;
 }
-#cool{
+.warm-btn:focus,
+.warm-btn:hover {
+    background-color:#FEE;
+}
+.cool-btn {
     background-color: #CDF;
     border-color: #CDF;
+    color: #EEE;
+    min-width: 70px;
+    margin-bottom: 10px;
 }
-#bright{
-    background-color: #EEEEEE;
-    border-color: #EEEEEE;
+.cool-btn:focus,
+.cool-btn:hover {
+    background-color:#DDF;
+    color: #EEE;
 }
-#dim{
-    background-color: #666;
-    border-color: #666;
+
+.blah{
+    display: inline-block;
+    width: 100%;
+}
+.warm-container,
+.cool-container {
+    display: inline-block;
+    width: 50%;
 }

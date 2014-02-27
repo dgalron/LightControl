@@ -45,7 +45,7 @@ class LightState(object):
                       'color': True}
 
     def __setattr__(self, name, value):
-        if name != 'color_pattern':
+        if name != 'color_pattern' and name != 'power':
             if 0 <= value <= 255:
                 self.__dict__[name] = value
             else:
