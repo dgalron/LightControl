@@ -87,13 +87,21 @@ body {
     background-color:#DDF;
     color: #EEE;
 }
+.color-btn {
+    background: url('rainbow.gif') center;
+    border-color: #FEC;
+    color: #000;
+    min-width: 70px;
+    margin-bottom: 10px;
+}
 
 .blah{
     display: inline-block;
     width: 100%;
 }
 .warm-container,
-.cool-container {
+.cool-container,
+.color-container {
     display: inline-block;
     width: 50%;
 }
